@@ -1,10 +1,13 @@
 import * as LaunchDarkly from "@launchdarkly/node-server-sdk";
 import express from "express";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 const port = 3000;
 
-const client = LaunchDarkly.init("sdk-6be3c732-89c8-42c2-89a5-54eda3292d1d");
+const client = LaunchDarkly.init(process.env.LD_SDK_KEY);
 
 const context = {
   kind: "user",
@@ -17,7 +20,7 @@ client.once("ready", function () {
 
   app.get("/", async (req, res) => {
     // Tracking your memberId lets us know you are connected.
-    client.track("68b16631de824d0992fcc945", context);
+    client.track(process.env.LD_EVENT_KEY, context);
 
     // Check feature flag value
     client.variation(
