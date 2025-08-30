@@ -51,6 +51,34 @@ client.once("ready", function () {
     );
   });
 
+// Agregar después de la ruta existente
+app.get("/menu", (req, res) => {
+  client.variation(
+    "feat-new-menu",
+    context,
+    false,
+    function (err, showFeature) {
+      if (showFeature) {
+        res.json({
+          menu: [
+            { id: 1, name: "🍔 Premium Burger", price: 15.99 },
+            { id: 2, name: "🍕 Artisan Pizza", price: 18.5 },
+            { id: 3, name: "🥗 Gourmet Salad", price: 12.99 },
+          ],
+          features: ["new-recipes", "nutritional-info", "customization"],
+        });
+      } else {
+        res.json({
+          menu: [
+            { id: 1, name: "Burger", price: 10.99 },
+            { id: 2, name: "Pizza", price: 14.5 },
+          ],
+        });
+      }
+    }
+  );
+});
+
   app.listen(port, () => {
     console.log(`🚀 Server is running on http://localhost:${port}`);
   });
